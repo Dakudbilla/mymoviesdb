@@ -1,0 +1,32 @@
+.nav {
+  display: flex;
+  width: 100%;
+  height: 64px;
+  background-color: rgb(3, 37, 65);
+  color: #fff;
+  position: fixed;
+  justify-content: center;
+  align-items: center;
+  font-weight: 600;
+}
+
+.nav-container {
+  width: 80%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.nav-container ul,
+.nav-title {
+  display: flex;
+  justify-content: space-evenly;
+}
+.nav-container li,
+.nav-title {
+  margin: 0 1.5rem;
+}
+
+.nav a{
+  color: #fff;
+}
+
