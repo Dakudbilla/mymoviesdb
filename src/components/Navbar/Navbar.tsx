@@ -7,13 +7,12 @@ const NavbBar = () => {
       <div className="nav-container">
         <div className="nav-title">
           <div className="logo"><Link to='/'>MyMoviesDB</Link></div>
-         
         </div>
         <div className="nav-others">
-        <ul>
-              <li><Link to='/movies'>Movies</Link> </li>
-              <li><Link to='/streams'>Streams</Link></li>
-            </ul>
+          <ul>
+            <li><Link to='/movies'>Movies</Link> </li>
+            <li><Link to='/streams'>Streams</Link></li>
+          </ul>
         </div>
       </div>
     </section>
