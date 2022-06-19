@@ -1,0 +1,27 @@
+
+  .rating-container{
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  svg {
+    transform: rotate(-90deg);
+  }
+  
+  .inner-circle {
+    stroke-dasharray: 100;
+    stroke-linecap: round;
+  }
+
+  .percent{
+    position: absolute;
+    font-size: 2rem;
+  }
+  
+  .percent  sup{
+    font-size: 0.8rem;
+  }
+  
+
+ 

@@ -3,6 +3,7 @@
 .card{
     position: relative;
     margin-top: 0.3rem;
+    margin-right: 1rem;
 }
 .card-image{
     display: flex;
@@ -15,31 +16,3 @@
     border-radius: 13px;
 }
 
-.card-rating{
-    height: 2.5rem;
-    width: 2.5rem;
-    border-radius: 50%;
-    background: #000;
-    position: absolute;
-    bottom: -1.25rem;
-    left: 1rem;
-    border: 2px solid #fff;
-    display: flex;  
-    align-items: center;
-    justify-content: center;
-}
-
-.card-rating-number{  
-    color: #fff;
- 
-}
-
-.card-rating-number{
- 
-
-    font-weight: 800;
-}
-
-.card-rating-number sup{
-    font-size: 0.5rem;
-}

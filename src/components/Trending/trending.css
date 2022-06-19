@@ -1,4 +1,21 @@
 .trend-container{
     display: flex;
-    flex-direction: row;
+    margin-right: 1rem;
+    overflow-x: scroll;
+    scrollbar-width: thin;
 }
+
+.trend-container::-webkit-scrollbar {
+    width: 4px;
+    background-color: hsl( 250, 12%, 90%);
+  }
+  
+  .trend-container::-webkit-scrollbar-thumb {
+    background-color:   hsl( 250, 12%, 80%);
+    border-radius: 0.5rem;
+    width: 0.1rem;
+  }
+  
+  .trend-container::-webkit-scrollbar-thumb:hover {
+    border-color:  hsl( 250, 12%, 80%);
+  }
