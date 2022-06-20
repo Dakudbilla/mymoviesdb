@@ -6,12 +6,11 @@ const Card = () => {
     <div className="card">
       <div className="card-image">
         <img src={testImage} alt="test image" />
-        <div className="card-rating">
-          <Rating />
-        </div>
       </div>
-
-      <div className="body">
+      <div className="card-rating">
+        <Rating />
+      </div>
+      <div className="card-body">
         <div className="card-title">
           Title
         </div>

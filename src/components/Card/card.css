@@ -1,18 +1,32 @@
 
 
 .card{
+    display: flex;
+    flex-direction: column;
     position: relative;
     margin-top: 0.3rem;
     margin-right: 1rem;
 }
-.card-image{
+.card-image-rating{
     display: flex;
     flex-direction: column;
     position: relative;
 }
 .card-image img{
-    height: 300px;
-    width: 200px;
+    height: 14rem;
+    width: 9.5rem;
     border-radius: 13px;
+}
+
+.card-rating{
+    position: relative;
+    bottom: 50px;
+    left: -30px;
+}
+
+.card-body{
+    position: absolute;
+    bottom: 10px;
+    left: 20px;
 }
 

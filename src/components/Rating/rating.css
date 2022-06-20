@@ -12,15 +12,18 @@
   .inner-circle {
     stroke-dasharray: 100;
     stroke-linecap: round;
+    color: rgb(243, 186, 175)
   }
 
   .percent{
     position: absolute;
-    font-size: 2rem;
+    font-size: 1rem;
+    font-weight: 800;
+    color: #fff ;
   }
   
   .percent  sup{
-    font-size: 0.8rem;
+    font-size: 0.5rem;
   }
   
 
