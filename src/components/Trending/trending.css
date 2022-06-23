@@ -6,7 +6,8 @@
 }
 
 .trend-container::-webkit-scrollbar {
-    width: 4px;
+    width: 5px;
+    height: 5px;
     background-color: hsl( 250, 12%, 90%);
   }
   
