@@ -4,11 +4,12 @@
   height: 64px;
   background-color: rgb(3, 37, 65);
   color: #fff;
-  position: fixed;
   justify-content: center;
   align-items: center;
   font-weight: 600;
   z-index: 900;
+  position: sticky;
+  top: -3px;
 }
 
 .nav-container {

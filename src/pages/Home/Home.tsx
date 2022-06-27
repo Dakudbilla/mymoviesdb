@@ -3,21 +3,10 @@ import { useEffect } from "react";
 import Footer from "../../components/Footer/Footer";
 import Header from "../../components/Header/Header";
 import Trending from "../../components/Trending/Trending";
-import { getMovie } from "../../network/api";
 import './home.css'
 const Home = () => {
 
-    useEffect(() => {
 
-        const fetchMovie = async () => {
-            const res = await axios.get(getMovie())
-
-            console.log({ res })
-        }
-
-        fetchMovie()
-
-    }, [])
     return (
         <>
 
