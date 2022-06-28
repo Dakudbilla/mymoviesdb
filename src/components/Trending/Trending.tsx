@@ -10,9 +10,8 @@ const Trending = () => {
 
         const fetchMovie = async () => {
             const res = await axios.get(getTrendingMovies())
-            console.log(res)
             setMovies(res?.data?.results)
-
+            console.log(res)
         }
 
         fetchMovie()
