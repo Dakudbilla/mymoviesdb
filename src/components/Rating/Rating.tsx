@@ -1,5 +1,10 @@
 import "./rating.css";
-const Rating = ({ rating }) => {
+
+interface ratingProps {
+  rating: number
+}
+
+const Rating = ({ rating }: ratingProps) => {
 
   return (
     <>

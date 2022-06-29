@@ -1,19 +1,20 @@
 import axios from "axios"
 import { useEffect, useState } from "react"
 import { getTrendingMovies } from "../../network/api"
+import { movieProps } from "../../services/service"
 import Card from "../Card/Card"
 import './trending.css'
 
 const Trending = () => {
-    const [movies, setMovies] = useState([])
+    const [movies, setMovies] = useState<movieProps[]>()
     useEffect(() => {
 
         const fetchMovie = async () => {
             const res = await axios.get(getTrendingMovies())
             setMovies(res?.data?.results)
             console.log(res)
-        }
 
+        }
         fetchMovie()
 
     }, [])
