@@ -1,4 +1,5 @@
 
+
 .movie-page-header{
     width: 100%;
     display: flex;
@@ -63,4 +64,62 @@
 
 .fav-icon svg{
     transform: rotate(0);
+}
+.movie-extras{
+    display: grid;
+    grid-template-columns: 4fr 1fr;
+    gap: 10px;
+    margin-top: 0.7rem;
+}
+.movie-cast{
+    margin-top: 0.7rem;
+    overflow: hidden;
+    display: flex;
+    justify-content: end;
+    
+}
+
+.movie-cast-container{
+    width: 80%;
+    position: relative;
+   
+}
+
+.movie-cast-title{
+    margin: 0 0.5rem 1.5rem 0.5rem;
+    font-weight: 700;
+    font-size: 1.5rem;
+}
+
+
+.movie-sidebar{
+    margin-top: 0.7rem;
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+
+
+}
+
+.shadow{
+    content: '';
+    width: 60px;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-image: linear-gradient(to right, rgba(255,255,255,0) 0%, #fff 100%);
+    will-change: opacity;
+    pointer-events: none;
+}
+
+.social-icons{
+    display: grid;
+    grid-template-columns:max-content max-content max-content max-content ;
+    gap: 0.8rem;
+}
+
+.movie-status-title,.movie-language-title,.movie-budget-title,.movie-revenue-title{
+    font-weight: 700;
 }
