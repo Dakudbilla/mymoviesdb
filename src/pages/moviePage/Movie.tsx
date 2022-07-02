@@ -6,24 +6,44 @@ import Rating from "../../components/Rating/Rating";
 import Trending from "../../components/Trending/Trending";
 import { hexToRGB } from '../../utils/hextoRGB';
 import { useParams } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { getMovieBackDropImage, getMovieDetails } from '../../network/api';
+import { movieProps } from '../../services/service';
+import axios from 'axios';
 const Movie = () => {
   const { id: movieID } = useParams()
-  const { data, loading, error } = usePalette(testImage)
+  let { data, loading, error } = usePalette(testImage)
+
+  const [movie, setMovie] = useState<movieProps>()
+  useEffect(() => {
+
+    const fetchMovie = async () => {
+      const res = await axios.get(getMovieDetails(movieID!))
+      setMovie(res?.data)
+      console.log({ 'movie': res })
+
+    }
+    fetchMovie()
+
+  }, [])
+
+  // movie?.backdrop_path ? { data, loading, error } = usePalette(getMovieBackDropImage(movie.backdrop_path)) : { data, loading, error } = usePalette(testImage)
+  // console.log(data)
 
   console.log(movieID)
   return <section className="movie-page">
-    <div className="movie-page-header" >
+    <div className="movie-page-header" style={{ backgroundImage: `url(https://www.themoviedb.org/t/p/w1000_and_h450_multi_faces/${movie?.backdrop_path})` }} >
       <div style={{ width: '100%', display: 'flex', justifyContent: 'center', backgroundImage: `linear-gradient(to right, ${data.vibrant ? hexToRGB(data.vibrant, 1) : data.vibrant}, ${data.vibrant ? hexToRGB(data.vibrant, 0.6) : data.vibrant} )`, backgroundSize: 'cover' }}>
         <div className="movie-header-container" >
           <div className="movie-poster-image">
-            <img src={testImage} alt="movie image" width="300px" height="450px" />
+            <img src={`https://www.themoviedb.org/t/p/w300_and_h450_face//${movie?.poster_path}`} alt="movie image" width="300px" height="450px" style={{ borderRadius: '10px' }} />
           </div>
           <div className="movie-details">
-            <div className="movie-title"> Kaakuka Samula Tikoo</div>
+            <div className="movie-title"> {movie?.title}</div>
             <div className="movie-header-actions">
               <div className="movie-rating">
                 <div className="user-score">User Score</div>
-                <Rating rating={5.9} />
+                <Rating rating={movie?.vote_average!} />
               </div>
               <div className="fav-icon">
 
@@ -34,8 +54,7 @@ const Movie = () => {
               </div>
             </div>
             <div className="move-overview">
-              Lorem ipsum dolor sit amet consectetur, adipisicing elit. Tempore sed molestias veniam in blanditiis inventore facilis exercitationem. Debitis, dolorem quod ratione totam sed eum minima veritatis enim earum delectus nihil reprehenderit asperiores cumque at ducimus, quidem eveniet eius facilis praesentium. Sapiente consequatur fuga illum unde quia! Consectetur illo neque accusantium? Laboriosam explicabo non unde aliquam iste laudantium vitae perspiciatis, quidem quisquam dolorum doloremque assumenda obcaecati minima asperiores tempora incidunt quia natus similique. Perferendis non quaerat vitae sequi illo, a tenetur, eaque rerum iure dicta animi quae, placeat at quos. Mollitia eaque porro nulla excepturi ab aliquid impedit nemo odit nam.
-
+              {movie?.overview}
             </div>
           </div>
         </div>

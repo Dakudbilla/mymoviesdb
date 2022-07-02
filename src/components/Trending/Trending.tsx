@@ -9,13 +9,13 @@ const Trending = () => {
     const [movies, setMovies] = useState<movieProps[]>()
     useEffect(() => {
 
-        const fetchMovie = async () => {
+        const fetchMovies = async () => {
             const res = await axios.get(getTrendingMovies())
             setMovies(res?.data?.results)
             console.log(res)
 
         }
-        fetchMovie()
+        fetchMovies()
 
     }, [])
     return (
