@@ -9,7 +9,32 @@ export interface movieProps{
     title:string
     vote_average:number
     vote_count: number
-    zama:number
+    budget:number
+    revenue:number
+    original_language:string
+
 }
 
 
+export const movieLang=(lang:string)=>{
+switch(lang){
+    case  'en':
+        return "English"
+    case 'fr':
+        return "French"
+    case 'ar':
+        return 'Arabic'
+    case 'es':
+        return "Spanish"
+    case 'de':
+        return "German"
+    case 'zh':
+        return  "Chinese"
+    case 'ko':
+        return   "Korean"
+    case 'ja':
+        return "Japanese"
+        
+}
+
+}

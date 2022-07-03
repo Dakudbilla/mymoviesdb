@@ -1,4 +1,4 @@
-import { usePalette } from 'react-palette'
+import Palette, { usePalette } from 'react-palette'
 
 import "./movie.css";
 import testImage from './../../assets/images/test.jpg'
@@ -8,58 +8,61 @@ import { hexToRGB } from '../../utils/hextoRGB';
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { getMovieBackDropImage, getMovieDetails } from '../../network/api';
-import { movieProps } from '../../services/service';
+import { movieLang, movieProps } from '../../services/service';
 import axios from 'axios';
+import { formatCurrency } from '../../utils/formatCurrency';
 const Movie = () => {
   const { id: movieID } = useParams()
-  let { data, loading, error } = usePalette(testImage)
-
+  const [movieBackdrop, setMovieBackdrop] = useState<string>('')
   const [movie, setMovie] = useState<movieProps>()
+  !movie?.backdrop_path ?? setMovieBackdrop(movie?.backdrop_path)
   useEffect(() => {
 
     const fetchMovie = async () => {
       const res = await axios.get(getMovieDetails(movieID!))
       setMovie(res?.data)
-      console.log({ 'movie': res })
+      setMovieBackdrop(movie?.backdrop_path!)
+
+
 
     }
     fetchMovie()
 
-  }, [])
+  }, [movieBackdrop])
 
-  // movie?.backdrop_path ? { data, loading, error } = usePalette(getMovieBackDropImage(movie.backdrop_path)) : { data, loading, error } = usePalette(testImage)
-  // console.log(data)
-
-  console.log(movieID)
   return <section className="movie-page">
     <div className="movie-page-header" style={{ backgroundImage: `url(https://www.themoviedb.org/t/p/w1000_and_h450_multi_faces/${movie?.backdrop_path})` }} >
-      <div style={{ width: '100%', display: 'flex', justifyContent: 'center', backgroundImage: `linear-gradient(to right, ${data.vibrant ? hexToRGB(data.vibrant, 1) : data.vibrant}, ${data.vibrant ? hexToRGB(data.vibrant, 0.6) : data.vibrant} )`, backgroundSize: 'cover' }}>
-        <div className="movie-header-container" >
-          <div className="movie-poster-image">
-            <img src={`https://www.themoviedb.org/t/p/w300_and_h450_face//${movie?.poster_path}`} alt="movie image" width="300px" height="450px" style={{ borderRadius: '10px' }} />
-          </div>
-          <div className="movie-details">
-            <div className="movie-title"> {movie?.title}</div>
-            <div className="movie-header-actions">
-              <div className="movie-rating">
-                <div className="user-score">User Score</div>
-                <Rating rating={movie?.vote_average!} />
+
+      <Palette src={movie?.backdrop_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : ''}>
+        {({ data, loading, error }) => {
+          return <div style={{ width: '100%', display: 'flex', justifyContent: 'center', backgroundImage: `linear-gradient(to right, ${data.lightVibrant ? hexToRGB(data.lightVibrant, 1) : data.lightVibrant}, ${data.lightVibrant ? hexToRGB(data.lightVibrant, 0.85) : data.lightVibrant} )`, backgroundSize: 'cover' }} >
+            <div className="movie-header-container"  >
+              <div className="movie-poster-image">
+                <img src={`https://www.themoviedb.org/t/p/w300_and_h450_face${movie?.poster_path}`} alt="movie image" width="300px" height="450px" style={{ borderRadius: '10px' }} />
               </div>
-              <div className="fav-icon">
+              <div className="movie-details">
+                <div className="movie-title"> {movie?.title}</div>
+                <div className="movie-header-actions">
+                  <div className="movie-rating">
+                    <div className="user-score">User Score</div>
+                    <Rating rating={movie?.vote_average!} />
+                  </div>
+                  <div className="fav-icon">
 
-                <svg id="glyphicons-basic" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-                  <path fill="#ffffff" id="heart" d="M27.78131,11.92578c0,4.82666-6.13562,8.68128-11.0376,14.0686a.99978.99978,0,0,1-1.48742,0c-4.902-5.38732-11.03748-9.24194-11.03748-14.0686,0-5.52954,7.53626-9.48682,11.57507-3.82544a.25855.25855,0,0,0,.42029.00562C20.47992,2.43628,27.78131,6.39453,27.78131,11.92578Z" />
-                </svg>
+                    <svg id="glyphicons-basic" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+                      <path fill="#ffffff" id="heart" d="M27.78131,11.92578c0,4.82666-6.13562,8.68128-11.0376,14.0686a.99978.99978,0,0,1-1.48742,0c-4.902-5.38732-11.03748-9.24194-11.03748-14.0686,0-5.52954,7.53626-9.48682,11.57507-3.82544a.25855.25855,0,0,0,.42029.00562C20.47992,2.43628,27.78131,6.39453,27.78131,11.92578Z" />
+                    </svg>
 
+                  </div>
+                </div>
+                <div className="move-overview">
+                  {movie?.overview}
+                </div>
               </div>
             </div>
-            <div className="move-overview">
-              {movie?.overview}
-            </div>
           </div>
-        </div>
-      </div>
-
+        }}
+      </Palette>
     </div>
     <div className="movie-extras">
       <div className="movie-cast">
@@ -86,23 +89,24 @@ const Movie = () => {
 
         <div className="movie-language">
           <div className="movie-language-title">Available language</div>
-          <div className="movie-language-content"> English</div>
+          <div className="movie-language-content"> {movie?.original_language && movieLang(movie?.original_language)}</div>
         </div>
 
         <div className="movie-budget">
           <div className="movie-budget-title">Available Budget</div>
-          <div className="movie-budget-content"> $19,000,000</div>
+          <div className="movie-budget-content"> {movie?.budget ? Number(formatCurrency(movie?.budget)) > 0 ? formatCurrency(movie?.budget) : "Not Available" : "Not Available"}</div>
         </div>
 
         <div className="movie-revenue">
           <div className="movie-revenue-title">Revenue</div>
-          <div className="movie-revenue-content"> $9,000,000</div>
+          <div className="movie-revenue-content">{movie?.revenue ? Number(formatCurrency(movie?.revenue)) > 0 ? formatCurrency(movie?.revenue) : "Not Available" : "Not Available"}</div>
         </div>
 
       </div>
 
 
     </div>
+
 
   </section >
 
