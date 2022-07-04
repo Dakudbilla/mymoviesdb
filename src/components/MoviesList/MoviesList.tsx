@@ -3,9 +3,9 @@ import { useEffect, useState } from "react"
 import { getTrendingMovies } from "../../network/api"
 import { movieProps } from "../../services/service"
 import Card from "../Card/Card"
-import './trending.css'
+import './movieslist.css'
 
-const Trending = () => {
+const MoviesList = () => {
     const [movies, setMovies] = useState<movieProps[]>()
     useEffect(() => {
 
@@ -25,7 +25,8 @@ const Trending = () => {
                     {
                         movies.map((movie) => <Card movie={movie} key={movie.id} />)
                     }
-                </div> : <div>Loading</div>
+                </div> : <div className="spinner"></div>
+
             }
 
 
@@ -33,4 +34,4 @@ const Trending = () => {
     )
 }
 
-export default Trending
+export default MoviesList

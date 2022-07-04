@@ -4,7 +4,6 @@
     width: 100%;
     display: flex;
     justify-content: center;
-    background-image: url('.../../../../assets/images/test.jpg');
     background-size: cover;
     background-repeat: no-repeat;
     color: #fff;

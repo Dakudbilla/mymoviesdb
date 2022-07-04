@@ -15,6 +15,12 @@ export interface movieProps{
 
 }
 
+export interface personProps{
+    id:number
+    name:string
+    profile_path:string
+    character:string
+}
 
 export const movieLang=(lang:string)=>{
 switch(lang){

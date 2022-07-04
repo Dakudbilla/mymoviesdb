@@ -1,9 +1,9 @@
 import Palette, { usePalette } from 'react-palette'
 
 import "./movie.css";
-import testImage from './../../assets/images/test.jpg'
+
 import Rating from "../../components/Rating/Rating";
-import Trending from "../../components/Trending/Trending";
+import MoviesList from "../../components/MoviesList/MoviesList";
 import { hexToRGB } from '../../utils/hextoRGB';
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
@@ -11,11 +11,11 @@ import { getMovieBackDropImage, getMovieDetails } from '../../network/api';
 import { movieLang, movieProps } from '../../services/service';
 import axios from 'axios';
 import { formatCurrency } from '../../utils/formatCurrency';
+import People from '../../components/People/People';
 const Movie = () => {
   const { id: movieID } = useParams()
   const [movieBackdrop, setMovieBackdrop] = useState<string>('')
   const [movie, setMovie] = useState<movieProps>()
-  !movie?.backdrop_path ?? setMovieBackdrop(movie?.backdrop_path)
   useEffect(() => {
 
     const fetchMovie = async () => {
@@ -31,14 +31,14 @@ const Movie = () => {
   }, [movieBackdrop])
 
   return <section className="movie-page">
-    <div className="movie-page-header" style={{ backgroundImage: `url(https://www.themoviedb.org/t/p/w1000_and_h450_multi_faces/${movie?.backdrop_path})` }} >
+    <div className="movie-page-header" style={{ backgroundImage: `${movie?.backdrop_path ? `url(https://image.tmdb.org/t/p/w1000_and_h450_multi_faces/${movie?.backdrop_path})` : 'linear-gradient(0deg, #252528 0%, #2f2b31 100%);'}` }} >
 
-      <Palette src={movie?.backdrop_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : ''}>
+      <Palette src={movie?.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : ''}>
         {({ data, loading, error }) => {
-          return <div style={{ width: '100%', display: 'flex', justifyContent: 'center', backgroundImage: `linear-gradient(to right, ${data.lightVibrant ? hexToRGB(data.lightVibrant, 1) : data.lightVibrant}, ${data.lightVibrant ? hexToRGB(data.lightVibrant, 0.85) : data.lightVibrant} )`, backgroundSize: 'cover' }} >
+          return <div style={{ width: '100%', display: 'flex', justifyContent: 'center', backgroundImage: `linear-gradient(to right, ${data.darkMuted ? hexToRGB(data.darkMuted, 1) : data.darkMuted}, ${data.darkMuted ? hexToRGB(data.darkMuted, 0.85) : data.darkMuted} )`, backgroundSize: 'cover' }} >
             <div className="movie-header-container"  >
               <div className="movie-poster-image">
-                <img src={`https://www.themoviedb.org/t/p/w300_and_h450_face${movie?.poster_path}`} alt="movie image" width="300px" height="450px" style={{ borderRadius: '10px' }} />
+                <img src={`https://image.tmdb.org/t/p/w500${movie?.poster_path}`} alt="movie image" width="300px" height="450px" style={{ borderRadius: '10px' }} />
               </div>
               <div className="movie-details">
                 <div className="movie-title"> {movie?.title}</div>
@@ -61,6 +61,7 @@ const Movie = () => {
               </div>
             </div>
           </div>
+
         }}
       </Palette>
     </div>
@@ -69,7 +70,7 @@ const Movie = () => {
         <div className="movie-cast-container">
           <div className="movie-cast-title">Top Billed Casts</div>
           <div className="movie-casts-cards" >
-            <Trending />
+            {movieID && <People movie_id={movieID} />}
             <div className="shadow"></div>
 
           </div>

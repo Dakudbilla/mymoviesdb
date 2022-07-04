@@ -2,7 +2,7 @@ import axios from "axios";
 import { useEffect } from "react";
 import Footer from "../../components/Footer/Footer";
 import Header from "../../components/Header/Header";
-import Trending from "../../components/Trending/Trending";
+import MoviesList from "../../components/MoviesList/MoviesList";
 import './home.css'
 const Home = () => {
 
@@ -15,11 +15,11 @@ const Home = () => {
                 <div className="popular">
                     <div className="popular-container">
                         <div className="popular-title">What's  Popular</div>
-                        <Trending />
+                        <MoviesList />
                     </div>
                     <div className="popular-container">
                         <div className="popular-title">What's  Popular</div>
-                        <Trending />
+                        <MoviesList />
                     </div>
 
                 </div>

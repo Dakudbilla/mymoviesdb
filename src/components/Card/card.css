@@ -3,11 +3,11 @@
 .card{
     display: flex;
     flex-direction: column;
-    position: relative;
     margin-top: 0.3rem;
     margin-right: 1rem;
 }
-.card-image-rating{
+.card-image{
+    position: relative;
     display: flex;
     flex-direction: column;
     position: relative;
@@ -15,18 +15,26 @@
 .card-image img{
     height: 14rem;
     width: 9.5rem;
-    border-radius: 13px;
+    border-radius: 10px 10px 0 0;
 }
 
 .card-rating{
-    position: relative;
-    bottom: 50px;
-    left: -30px;
+    position: absolute;
+    bottom: -30px;
+    left: 0;
 }
 
-.card-body{
+/* .card-body{
     position: absolute;
     bottom: 10px;
     left: 20px;
+} */
+
+.card-title{
+    font-weight: 700;
 }
 
+.card-date{
+    font-size: 0.8rem;
+    font-weight: 600;
+}

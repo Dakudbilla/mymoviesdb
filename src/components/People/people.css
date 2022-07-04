@@ -1,0 +1,64 @@
+.people-container{
+    display: flex;
+    margin-right: 1rem;
+    overflow-x: scroll;
+    scrollbar-width: thin;
+}
+
+.people-container::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+    background-color: hsl( 250, 12%, 90%);
+  }
+  
+  .people-container::-webkit-scrollbar-thumb {
+    background-color:   hsl( 250, 12%, 80%);
+    border-radius: 0.5rem;
+    width: 0.1rem;
+  }
+  
+  .people-container::-webkit-scrollbar-thumb:hover {
+    border-color:  hsl( 250, 12%, 80%);
+  }
+
+  
+  .spinner {
+    margin: 0 auto;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: radial-gradient(farthest-side,#474bff 94%,#0000) top/9px 9px no-repeat,
+           conic-gradient(#0000 30%,#474bff);
+    -webkit-mask: radial-gradient(farthest-side,#0000 calc(100% - 9px),#000 0);
+    mask: radial-gradient(farthest-side,#0000 calc(100% - 9px),#000 0);
+    animation: spinner-c7wet2 1s infinite linear;
+ }
+ 
+ @keyframes spinner-c7wet2 {
+    100% {
+       transform: rotate(1turn);
+    }
+ }
+
+ 
+
+.person-card{
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    margin-right: 1rem;
+}
+
+.person-card:hover {
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+  }
+
+.person-card-image img{
+    border-radius: 10px 10px 0 0;
+}
+
+
+.person-card-body{
+    padding: 0.2rem 0.5rem;
+
+}
+
