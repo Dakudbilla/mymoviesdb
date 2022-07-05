@@ -3,35 +3,44 @@ import Palette, { usePalette } from 'react-palette'
 import "./movie.css";
 
 import Rating from "../../components/Rating/Rating";
-import MoviesList from "../../components/MoviesList/MoviesList";
 import { hexToRGB } from '../../utils/hextoRGB';
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { getMovieBackDropImage, getMovieDetails } from '../../network/api';
-import { movieLang, movieProps } from '../../services/service';
+import { getMovieDetails, getSimilarMovies } from '../../network/api';
+import { movieLang, movieProps, TVProps } from '../../services/service';
 import axios from 'axios';
 import { formatCurrency } from '../../utils/formatCurrency';
 import People from '../../components/People/People';
+import Spinner from '../../components/Spinner/Spinner';
+import MoviesList from '../../components/MoviesList/MoviesList';
 const Movie = () => {
   const { id: movieID } = useParams()
   const [movieBackdrop, setMovieBackdrop] = useState<string>('')
   const [movie, setMovie] = useState<movieProps>()
+  const [similarMovies, setSimilarMovies] = useState<(movieProps & TVProps)[]>()
+
   useEffect(() => {
 
     const fetchMovie = async () => {
       const res = await axios.get(getMovieDetails(movieID!))
       setMovie(res?.data)
       setMovieBackdrop(movie?.backdrop_path!)
-
-
+    }
+    const fetchSimilarMovies = async () => {
+      const res = await axios.get(getSimilarMovies(movieID!))
+      setSimilarMovies(res?.data.results)
 
     }
+
+
+
     fetchMovie()
+    fetchSimilarMovies()
 
   }, [movieBackdrop])
 
   return <section className="movie-page">
-    <div className="movie-page-header" style={{ backgroundImage: `${movie?.backdrop_path ? `url(https://image.tmdb.org/t/p/w1000_and_h450_multi_faces/${movie?.backdrop_path})` : 'linear-gradient(0deg, #252528 0%, #2f2b31 100%);'}` }} >
+    <div className="movie-page-header" style={{ backgroundImage: `${movie?.backdrop_path ? `url(https://image.tmdb.org/t/p/w1000_and_h450_multi_faces/${movie?.backdrop_path})` : 'linear-gradient(0deg, #252528 0%, #2f2b31 100%)'}` }} >
 
       <Palette src={movie?.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : ''}>
         {({ data, loading, error }) => {
@@ -104,8 +113,18 @@ const Movie = () => {
         </div>
 
       </div>
+    </div>
+    <div className="similar-movies">
+      <div className='similar-movies-container'>
+        <h3 className='similar-movies-title'>See similar Movies</h3>
+        <div className='similar-movies-list'>
+          {
+            similarMovies ? <MoviesList movies={similarMovies} />
+              : <Spinner />
 
-
+          }
+        </div>
+      </div>
     </div>
 
 

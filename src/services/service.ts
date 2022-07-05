@@ -12,6 +12,7 @@ export interface movieProps{
     budget:number
     revenue:number
     original_language:string
+    media_type:string
 
 }
 
@@ -22,6 +23,23 @@ export interface personProps{
     character:string
 }
 
+
+export interface TVProps{
+    adult: boolean
+    backdrop_path: string
+    id:number
+    overview: string
+    popularity: number
+    poster_path: string
+    name:string
+    vote_average:number
+    vote_count: number
+    budget:number
+    revenue:number
+    original_language:string
+    media_type:string
+    first_air_date:string
+}
 export const movieLang=(lang:string)=>{
 switch(lang){
     case  'en':

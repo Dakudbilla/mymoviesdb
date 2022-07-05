@@ -1,12 +1,16 @@
 import "./card.css";
 import Rating from "../Rating/Rating";
 import { imgBaseURL } from "../../network/api";
-import { movieProps } from "../../services/service";
+import { movieProps, TVProps } from "../../services/service";
 import { Link } from "react-router-dom";
+import { formatDate } from "../../utils/formatCurrency";
+
+
 
 interface CardProps {
-  movie: movieProps
+  movie: movieProps & TVProps
 }
+
 
 const Card = ({ movie }: CardProps) => {
   return <>
@@ -20,10 +24,10 @@ const Card = ({ movie }: CardProps) => {
 
       <div className="card-body" style={{ display: 'block', marginTop: '1rem' }}>
         <div className="card-title">
-          {movie.title}
+          {movie.media_type && movie.media_type !== "movie" ? movie.name : movie.title}
         </div>
         <div className="card-date">
-          {new Date(movie.release_date).toLocaleDateString('en-us', { year: "numeric", month: "short", day: "numeric" })
+          {movie.media_type && movie.media_type !== "movie" ? formatDate(movie.first_air_date) : formatDate(movie.release_date)
           }
         </div>
       </div>
