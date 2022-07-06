@@ -24,10 +24,10 @@ const Card = ({ movie }: CardProps) => {
 
       <div className="card-body" style={{ display: 'block', marginTop: '1rem' }}>
         <div className="card-title">
-          {movie.media_type && movie.media_type !== "movie" ? movie.name : movie.title}
+          {movie.title ? movie.title : movie.name}
         </div>
         <div className="card-date">
-          {movie.media_type && movie.media_type !== "movie" ? formatDate(movie.first_air_date) : formatDate(movie.release_date)
+          {movie.name ? formatDate(movie.first_air_date) : formatDate(movie.release_date)
           }
         </div>
       </div>

@@ -16,3 +16,5 @@ export const getMovieCasts=(movie_id:string)=>`https://api.themoviedb.org/3/movi
 export const getSimilarMovies=(movie_id:string)=>`https://api.themoviedb.org/3/movie/${movie_id}/similar?api_key=da061aea68de1ab70547833e12285d32&language=en-US&page=1`
 
 export const getTrendingTV=()=>`https://api.themoviedb.org/3/trending/tv/day?api_key=da061aea68de1ab70547833e12285d32`
+
+export const getTopRatedTV=()=>`https://api.themoviedb.org/3/tv/top_rated?api_key=da061aea68de1ab70547833e12285d32&language=en-US&page=1`

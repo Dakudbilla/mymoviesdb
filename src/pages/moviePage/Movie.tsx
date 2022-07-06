@@ -37,7 +37,7 @@ const Movie = () => {
     fetchMovie()
     fetchSimilarMovies()
 
-  }, [movieBackdrop])
+  }, [movieBackdrop, movieID])
 
   return <section className="movie-page">
     <div className="movie-page-header" style={{ backgroundImage: `${movie?.backdrop_path ? `url(https://image.tmdb.org/t/p/w1000_and_h450_multi_faces/${movie?.backdrop_path})` : 'linear-gradient(0deg, #252528 0%, #2f2b31 100%)'}` }} >

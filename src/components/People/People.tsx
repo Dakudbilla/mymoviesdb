@@ -22,7 +22,7 @@ const People = ({ movie_id }: PeopleProps) => {
         }
         fetchMovies()
 
-    }, [])
+    }, [movie_id])
     return (
         <>
             {
