@@ -23,7 +23,7 @@
      outline: none;
     }
 
-    input.search-button {
+    button.search-button {
         display: inline;
         background: linear-gradient(to right, rgba(30,213,169, 1) 0%, rgba(1,180,228, 1) 100%); 
         position: absolute;
@@ -40,4 +40,9 @@
         cursor: pointer;
         color: #fff;
         font-weight: 600;
+    }
+
+    .search-form{
+        display: inherit;
+        width: 100%;
     }

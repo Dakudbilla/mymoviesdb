@@ -24,10 +24,9 @@ const Home = () => {
     const handleSelect = (event: React.MouseEvent<HTMLLIElement>) => {
 
         if (event.currentTarget.id.includes('top')) {
-            console.log("hhhh")
-            setIsActive({ isActiveTrending: isActive.isActiveTrending, isActiveTopRated: event.currentTarget.id })
+            setIsActive({ ...isActive, isActiveTopRated: event.currentTarget.id })
         } else {
-            setIsActive({ isActiveTrending: event.currentTarget.id, isActiveTopRated: isActive.isActiveTopRated })
+            setIsActive({ ...isActive, isActiveTrending: event.currentTarget.id })
         }
     }
     useEffect(() => {
@@ -51,17 +50,13 @@ const Home = () => {
 
         const fetchTrendingTV = async () => {
             const res = await axios.get(getTrendingTV())
-            console.log(res?.data.results)
             settrendingTV(res?.data.results)
-            console.log({ trendingTV })
 
         }
 
         const fetchTopRatedTV = async () => {
             const res = await axios.get(getTopRatedTV())
-            console.log(res?.data.results)
             setTopRatedTV(res?.data.results)
-            console.log({ trendingTV })
 
         }
 
