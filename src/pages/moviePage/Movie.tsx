@@ -6,17 +6,17 @@ import Rating from "../../components/Rating/Rating";
 import { hexToRGB } from '../../utils/hextoRGB';
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { getMovieDetails, getSimilarMovies } from '../../network/api';
+import { getMovieDetails, getSimilarMovies, imgBaseURL } from '../../network/api';
 import { movieLang, movieProps, TVProps } from '../../services/service';
 import axios from 'axios';
-import { formatCurrency } from '../../utils/formatCurrency';
+import { formatCurrency, NoImg } from '../../utils/formatCurrency';
 import People from '../../components/People/People';
 import Spinner from '../../components/Spinner/Spinner';
 import MoviesList from '../../components/MoviesList/MoviesList';
 const Movie = () => {
   const { id: movieID } = useParams()
   const [movieBackdrop, setMovieBackdrop] = useState<string>('')
-  const [movie, setMovie] = useState<movieProps>()
+  const [movie, setMovie] = useState<movieProps & TVProps>()
   const [similarMovies, setSimilarMovies] = useState<(movieProps & TVProps)[]>()
 
   useEffect(() => {
@@ -47,10 +47,10 @@ const Movie = () => {
           return <div style={{ width: '100%', display: 'flex', justifyContent: 'center', backgroundImage: `linear-gradient(to right, ${data.darkMuted ? hexToRGB(data.darkMuted, 1) : data.darkMuted}, ${data.darkMuted ? hexToRGB(data.darkMuted, 0.85) : data.darkMuted} )`, backgroundSize: 'cover' }} >
             <div className="movie-header-container"  >
               <div className="movie-poster-image">
-                <img src={`https://image.tmdb.org/t/p/w500${movie?.poster_path}`} alt="movie image" width="300px" height="450px" style={{ borderRadius: '10px' }} />
+                <img src={movie?.poster_path ? `${imgBaseURL}${movie.poster_path}` : NoImg()} alt="movie image" width="300px" height="450px" style={{ borderRadius: '10px' }} />
               </div>
               <div className="movie-details">
-                <div className="movie-title"> {movie?.title}</div>
+                <div className="movie-title"> {movie?.title ? movie.title : movie?.name}</div>
                 <div className="movie-header-actions">
                   <div className="movie-rating">
                     <div className="user-score">User Score</div>
