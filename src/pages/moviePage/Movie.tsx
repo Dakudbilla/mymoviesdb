@@ -42,9 +42,9 @@ const Movie = () => {
   return <section className="movie-page">
     <div className="movie-page-header" style={{ backgroundImage: `${movie?.backdrop_path ? `url(https://image.tmdb.org/t/p/w1000_and_h450_multi_faces/${movie?.backdrop_path})` : 'linear-gradient(0deg, #252528 0%, #2f2b31 100%)'}` }} >
 
-      <Palette src={movie?.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : ''}>
+      <Palette src={movie?.poster_path ? `https://corsanywhere.herokuapp.com/https://image.tmdb.org/t/p/w500${movie.poster_path}` : ''}>
         {({ data, loading, error }) => {
-          return <div style={{ width: '100%', display: 'flex', justifyContent: 'center', backgroundImage: `linear-gradient(to right, ${data.darkMuted ? hexToRGB(data.darkMuted, 1) : data.darkMuted}, ${data.darkMuted ? hexToRGB(data.darkMuted, 0.85) : data.darkMuted} )`, backgroundSize: 'cover' }} >
+          return <div style={{ width: '100%', display: 'flex', justifyContent: 'center', backgroundImage: `linear-gradient(to right, ${data.vibrant ? hexToRGB(data.vibrant, 1) : data.vibrant}, ${data.vibrant ? hexToRGB(data.vibrant, 0.85) : data.vibrant} )`, backgroundSize: 'cover' }} >
             <div className="movie-header-container"  >
               <div className="movie-poster-image">
                 <img src={movie?.poster_path ? `${imgBaseURL}${movie.poster_path}` : NoImg()} alt="movie image" width="300px" height="450px" style={{ borderRadius: '10px' }} />
