@@ -4,45 +4,65 @@ import "./movie.css";
 
 import Rating from "../../components/Rating/Rating";
 import { hexToRGB } from '../../utils/hextoRGB';
-import { useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { getMovieDetails, getSimilarMovies, imgBaseURL } from '../../network/api';
+import { fixCorsUrl, getMovieCasts, getMovieDetails, getSimilarMovies, getSimilarTV, getTVCasts, getTVDetails, imgBaseURL } from '../../network/api';
 import { movieLang, movieProps, TVProps } from '../../services/service';
-import axios from 'axios';
+
 import { formatCurrency, NoImg } from '../../utils/formatCurrency';
 import People from '../../components/People/People';
 import Spinner from '../../components/Spinner/Spinner';
 import MoviesList from '../../components/MoviesList/MoviesList';
+import axios from 'axios';
 const Movie = () => {
   const { id: movieID } = useParams()
-  const [movieBackdrop, setMovieBackdrop] = useState<string>('')
+  const { pathname } = useLocation()
   const [movie, setMovie] = useState<movieProps & TVProps>()
   const [similarMovies, setSimilarMovies] = useState<(movieProps & TVProps)[]>()
 
   useEffect(() => {
 
     const fetchMovie = async () => {
-      const res = await axios.get(getMovieDetails(movieID!))
-      setMovie(res?.data)
-      setMovieBackdrop(movie?.backdrop_path!)
+      if (pathname.includes('/tv')) {
+        if (movieID) {
+          const res = await axios.get(getTVDetails(movieID))
+          setMovie(res?.data)
+
+        }
+      } else if (pathname.includes('/movies')) {
+
+        if (movieID) {
+          const res = await axios.get(getMovieDetails(movieID))
+          setMovie(res?.data)
+        }
+      }
+
     }
     const fetchSimilarMovies = async () => {
-      const res = await axios.get(getSimilarMovies(movieID!))
-      setSimilarMovies(res?.data.results)
+      if (pathname.includes('/tv') && movieID) {
+        const res = await axios.get(getSimilarTV(movieID))
+        setSimilarMovies(res?.data.results)
+      } else {
+
+        if (movieID) {
+          const res = await axios.get(getSimilarMovies(movieID))
+          setSimilarMovies(res?.data.results)
+        }
+
+
+      }
 
     }
-
-
 
     fetchMovie()
     fetchSimilarMovies()
 
-  }, [movieBackdrop, movieID])
+  }, [movieID])
 
   return <section className="movie-page">
     <div className="movie-page-header" style={{ backgroundImage: `${movie?.backdrop_path ? `url(https://image.tmdb.org/t/p/w1000_and_h450_multi_faces/${movie?.backdrop_path})` : 'linear-gradient(0deg, #252528 0%, #2f2b31 100%)'}` }} >
 
-      <Palette src={movie?.poster_path ? `https://corsanywhere.herokuapp.com/https://image.tmdb.org/t/p/w500${movie.poster_path}` : ''}>
+      <Palette src={movie?.poster_path ? `${fixCorsUrl + imgBaseURL + movie.poster_path}` : ''}>
         {({ data, loading, error }) => {
           return <div style={{ width: '100%', display: 'flex', justifyContent: 'center', backgroundImage: `linear-gradient(to right, ${data.vibrant ? hexToRGB(data.vibrant, 1) : data.vibrant}, ${data.vibrant ? hexToRGB(data.vibrant, 0.85) : data.vibrant} )`, backgroundSize: 'cover' }} >
             <div className="movie-header-container"  >
@@ -79,7 +99,8 @@ const Movie = () => {
         <div className="movie-cast-container">
           <div className="movie-cast-title">Top Billed Casts</div>
           <div className="movie-casts-cards" >
-            {movieID && <People movie_id={movieID} />}
+
+            {movieID && <People media_id={movieID} getMediaCasts={movie?.name ? getTVCasts : getMovieCasts} />}
             <div className="shadow"></div>
 
           </div>
@@ -119,7 +140,7 @@ const Movie = () => {
         <h3 className='similar-movies-title'>See similar Movies</h3>
         <div className='similar-movies-list'>
           {
-            similarMovies ? <MoviesList movies={similarMovies} />
+            similarMovies ? similarMovies.length > 0 ? <MoviesList movies={similarMovies} /> : <div>No {movie?.name ? "TV Shows " : "Movies"} like this are Available</div>
               : <Spinner />
 
           }

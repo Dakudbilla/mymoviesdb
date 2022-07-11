@@ -17,7 +17,7 @@ const Card = ({ movie }: CardProps) => {
   return <>
     <div className="card">
       <div className="card-image" >
-        <Link to={`/movies/${movie.id}`}> <img src={movie.poster_path ? `${imgBaseURL}${movie.poster_path}` : NoImg} alt="mediatype image" /></Link>
+        <Link to={movie.title ? `/movies/${movie.id}` : `/tv/${movie.id}`}> <img src={movie.poster_path ? `${imgBaseURL}${movie.poster_path}` : NoImg} alt="mediatype image" /></Link>
         <div className="card-rating">
           <Rating rating={movie.vote_average} />
         </div>

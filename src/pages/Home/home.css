@@ -45,7 +45,7 @@
   .popular-header  li:hover{
     cursor: pointer;
   }
-  .active{
+  .active-media{
     background-color: aqua;
     border-radius: 1.9rem;
     

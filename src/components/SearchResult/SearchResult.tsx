@@ -1,24 +1,33 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { getSearchedMovies, getSearchedTV, imgBaseURL } from '../../network/api';
-import { movieProps } from '../../services/service';
+import { movieProps, TVProps } from '../../services/service';
 import './searchresult.css';
 import { formatDate } from '../../utils/formatCurrency';
 import Spinner from '../Spinner/Spinner';
 import NoImg from '../../assets/images/noIMG.svg'
+import ReactPaginate from 'react-paginate';
 interface numRes {
   total_pages: number
   total_results: number
+  currentPage: number
 }
 const SearchResult = () => {
   let [searchParams, setSearchParams] = useSearchParams();
-  const [movies, setMovies] = useState<movieProps[]>()
-  const [tv, setTv] = useState<movieProps[]>()
+  const [movies, setMovies] = useState<(movieProps & TVProps)[]>()
+  const [tv, setTv] = useState<(movieProps & TVProps)[]>()
   const [numTVRes, setNumTVRes] = useState<numRes>()
   const [numMoviesRes, setNumMovieRes] = useState<numRes>()
   const [isActive, setIsActive] = useState("movies_search")
-  const [loopingMedia, setLoopingMedia] = useState<movieProps[]>()
+  const [loopingMedia, setLoopingMedia] = useState<(movieProps & TVProps)[]>()
+  const [selectedPage, setSelectedPage] = useState(1)
 
+
+  const handlePageClick = (selectedItem: {
+    selected: number;
+  }) => {
+    setSelectedPage(selectedItem.selected + 1)
+  }
   const handleClick = (event: React.MouseEvent<HTMLLIElement>) => {
     if (event.currentTarget.id !== isActive) {
       setIsActive(event.currentTarget.id)
@@ -26,13 +35,11 @@ const SearchResult = () => {
     }
 
     if (event.currentTarget.id === "movies_search" && movies) {
-      console.log({ 'mmmooov': movies })
       setLoopingMedia(movies)
     }
 
 
     if (event.currentTarget.id === "tv_shows_search" && tv) {
-      console.log({ 'kkdks': tv })
       setLoopingMedia(tv)
     }
 
@@ -40,17 +47,17 @@ const SearchResult = () => {
   }
   useEffect(() => {
     const fetchSearchMovies = async () => {
-      const res = await getSearchedMovies(searchParams.get('query') || '')
+      const res = await getSearchedMovies(searchParams.get('query') || '', selectedPage)
       setMovies(res.data.results)
       setLoopingMedia(res.data.results)
-      setNumMovieRes({ total_pages: res.data.total_pages, total_results: res.data.total_results })
+      setNumMovieRes({ currentPage: res.data.page, total_pages: res.data.total_pages, total_results: res.data.total_results })
     }
 
     const fetchSearchTV = async () => {
-      const res = await getSearchedTV(searchParams.get('query') || '')
+      const res = await getSearchedTV(searchParams.get('query') || '', selectedPage)
       setTv(res.data.results)
 
-      setNumTVRes({ total_pages: res.data.total_pages, total_results: res.data.total_results })
+      setNumTVRes({ currentPage: res.data.page, total_pages: res.data.total_pages, total_results: res.data.total_results })
 
     }
 
@@ -58,7 +65,7 @@ const SearchResult = () => {
     fetchSearchMovies()
     fetchSearchTV()
 
-  }, [])
+  }, [selectedPage])
   return <div className="search-result">
     <div className="search-result-container">
       <div className="search-result-sidebar">
@@ -78,21 +85,40 @@ const SearchResult = () => {
       </div>
       <div className="search-result-main-container" >
         {
-          loopingMedia ? loopingMedia.map((movie) => (
-            <div className="search-result-main" key={movie.id}>
-              <div className="search-result-card">
-                <div className="search-res-img">
-                  <Link to={`/movies/${movie.id}`}> <img src={movie.poster_path ? `${imgBaseURL}${movie.poster_path}` : NoImg} alt="mediatype image" width="200px" height="100%" /></Link>
+          loopingMedia ?
+            <>
+              {loopingMedia.map((movie) => (
+                <div className="search-result-main" key={movie.id}>
+                  <div className="search-result-card">
+                    <div className="search-res-img">
+                      <Link to={movie.title ? `/movies/${movie.id}` : `/tv/${movie.id}`}> <img src={movie.poster_path ? `${imgBaseURL}${movie.poster_path}` : NoImg} alt="mediatype image" width="150px" height="100%" /></Link>
 
+                    </div>
+                    <div className="search-res-body">
+                      <div className="search-body-title">{movie?.title ? movie.title : movie?.name}</div>
+                      <div className="search-body-date">{movie.name ? formatDate(movie.first_air_date) : formatDate(movie.release_date)}</div>
+                      <div className="search-body-overview">{movie.overview.length > 256 ? movie.overview.slice(0, 256) + '...' : movie.overview} </div>
+                    </div>
+                  </div>
                 </div>
-                <div className="search-res-body">
-                  <div className="search-body-title">{movie.title}</div>
-                  <div className="search-body-date">{formatDate(movie.release_date)}</div>
-                  <div className="search-body-overview">{movie.overview.length > 256 ? movie.overview.slice(0, 256) + '...' : movie.overview} </div>
-                </div>
-              </div>
-            </div>
-          )) : <Spinner />
+
+              ))}
+              {
+                numMoviesRes && numTVRes ? <ReactPaginate
+                  breakLabel="..."
+                  nextLabel="next >"
+                  containerClassName="pagination-container"
+                  onPageChange={handlePageClick}
+                  pageRangeDisplayed={3}
+                  pageCount={loopingMedia[0].name ? numTVRes?.total_pages : numMoviesRes?.total_pages}
+                  previousLabel="< previous"
+                  nextLinkClassName='page-link'
+                  activeClassName='active'
+                  renderOnZeroPageCount={null!}
+                /> : ''
+              }
+            </>
+            : <Spinner />
         }
       </div>
 

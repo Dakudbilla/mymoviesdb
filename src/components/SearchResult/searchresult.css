@@ -96,3 +96,28 @@
     background-color: rgba(0,0,0,0.08);
 
 }
+
+.pagination-container{
+    display: flex;
+    gap: 0.5rem;
+    padding: 0.5rem;
+    background-color: rgb(10, 153, 175);
+    width: fit-content;
+    justify-content: space-evenly;
+    font-weight: 700;
+
+}
+
+.pagination-container li{
+    padding: 0 0.5rem;
+    color: #fff;
+}
+
+.active{
+    border-radius: 50%;
+    background-color: grey;
+}
+
+/* .page-link{
+    padding: 1rem;
+  } */

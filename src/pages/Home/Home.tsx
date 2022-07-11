@@ -81,7 +81,7 @@ const Home = () => {
                             <div className="popular-title">Trending </div>
                             <ul>
                                 {
-                                    ["TV", "Movies"].map((item, index) => <li key={index + item} id={`${index + item}`} className={isActive.isActiveTrending === `${index + item}` ? "active" : ''} onClick={handleSelect} >{item}</li>)
+                                    ["TV", "Movies"].map((item, index) => <li key={index + item} id={`${index + item}`} className={isActive.isActiveTrending === `${index + item}` ? "active-media" : ''} onClick={handleSelect} >{item}</li>)
                                 }
 
 
@@ -89,23 +89,14 @@ const Home = () => {
                         </div>
                         {trendingMovies && trendingTV ? <MoviesList movies={isActive.isActiveTrending === '1Movies' ? trendingMovies : trendingTV} /> : <Spinner />}
                     </div>
-                    {/* <div className="popular-container">
-                        <div className="popular-header">
-                            <div className="popular-title">Trending TV</div>
-                            <ul >
-                                <li>TV</li>
-                                <li>Movies</li>
-                            </ul>
-                        </div>
-                        {trendingTV ? <MoviesList movies={trendingTV} /> : <Spinner />}
-                    </div> */}
+
 
                     <div className="popular-container">
                         <div className="popular-header">
                             <div className="popular-title">Top Rated </div>
                             <ul>
                                 {
-                                    ["TV", "Movies"].map((item, index) => <li key={index + item} id={`${index + item + "topRated"}`} className={isActive.isActiveTopRated === `${index + item + "topRated"}` ? "active" : ''} onClick={handleSelect} >{item}</li>)
+                                    ["TV", "Movies"].map((item, index) => <li key={index + item} id={`${index + item + "topRated"}`} className={isActive.isActiveTopRated === `${index + item + "topRated"}` ? "active-media" : ''} onClick={handleSelect} >{item}</li>)
                                 }
 
 

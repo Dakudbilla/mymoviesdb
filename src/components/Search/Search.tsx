@@ -7,7 +7,10 @@ const Search = () => {
   const [searchText, setSearchText] = useState('')
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    navigate(`/search?query=${searchText}`)
+    if (searchText) {
+      navigate(`/search?query=${searchText}`)
+    }
+
 
   }
 
