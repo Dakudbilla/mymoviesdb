@@ -1,10 +1,13 @@
+import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { createContext, ReactNode, useContext, useState } from "react";
+import { auth } from "../firebase";
 
 
 interface contextProps {
     isUserLoggedIn: boolean
     signedInUserfavoriteMovies: () => string[]
     addOrRemoveFav: (movieId: string) => void
+    signInWithGoogle: () => void
     favMovies: string[]
 }
 
@@ -15,7 +18,7 @@ export const useFaveContext = () => {
 }
 export const FavMovieContextProvider = ({ children }: { children: ReactNode }) => {
     const [favMovies, setFavMovies] = useState<string[]>([])
-    const [isUserLoggedIn] = useState(false)
+    const [isUserLoggedIn, setIsUserLoggedIn] = useState(false)
     const addOrRemoveFav = (movieId: string) => {
         if (favMovies.find((movie) => movie === movieId)) {
             setFavMovies(favMovies.filter((movie) => movie !== movieId))
@@ -24,12 +27,24 @@ export const FavMovieContextProvider = ({ children }: { children: ReactNode }) =
         }
     }
 
+
     const signedInUserfavoriteMovies = (): string[] => {
         return ['1', '2']
     }
 
+    const signInWithGoogle = () => {
+        const provider = new GoogleAuthProvider()
+        signInWithPopup(auth, provider).then((res) => {
+            console.log(res)
+            setIsUserLoggedIn(Boolean(res.user))
+
+        }).catch((err) => {
+            console.log(err)
+        })
+    }
+
     return (
-        <faveMoviecontext.Provider value={{ addOrRemoveFav, signedInUserfavoriteMovies, isUserLoggedIn, favMovies }}>
+        <faveMoviecontext.Provider value={{ signInWithGoogle, addOrRemoveFav, signedInUserfavoriteMovies, isUserLoggedIn, favMovies }}>
             {children}
         </faveMoviecontext.Provider>
     )
