@@ -16,6 +16,7 @@ export const getMovieBackDropImage=(imgUrl:string)=>`https://www.themoviedb.org/
 
 export const getMovieCasts=(movie_id:string)=>`https://api.themoviedb.org/3/movie/${movie_id}/credits?api_key=da061aea68de1ab70547833e12285d32&language=en-US`
 export const getTVCasts=(tv_id:string)=>`https://api.themoviedb.org/3/tv/${tv_id}/credits?api_key=da061aea68de1ab70547833e12285d32&language=en-US`
+export const getMediaCasts=(tv_id:string,media_type:string)=>`https://api.themoviedb.org/3/${media_type}/${tv_id}/credits?api_key=da061aea68de1ab70547833e12285d32&language=en-US`
 
 export const getSimilarMovies=(movie_id:string)=>`https://api.themoviedb.org/3/movie/${movie_id}/similar?api_key=da061aea68de1ab70547833e12285d32&language=en-US&page=1`
 export const getSimilarTV=(tv_id:string)=>`https://api.themoviedb.org/3/tv/${tv_id}/similar?api_key=da061aea68de1ab70547833e12285d32&language=en-US&page=1`

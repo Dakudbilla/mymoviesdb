@@ -6,10 +6,11 @@ import Home from "./pages/Home/Home";
 import Movie from "./pages/moviePage/Movie";
 import Movies from "./pages/Movies/Movies";
 import SearchResult from "./components/SearchResult/SearchResult";
-
+import { FavMovieContextProvider } from "./context";
 const App = () => {
   return (
-    <>
+
+    <FavMovieContextProvider>
       <NavbBar />
       <Routes>
         <Route path="/" element={<Home />} />
@@ -19,7 +20,7 @@ const App = () => {
         <Route path="/search" element={<SearchResult />} />
       </Routes>
       <Footer />
-    </>
+    </FavMovieContextProvider>
   );
 };
 

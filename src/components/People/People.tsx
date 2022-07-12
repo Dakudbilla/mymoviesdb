@@ -1,5 +1,6 @@
 import axios from "axios"
 import { useEffect, useState } from "react"
+import { getMediaCasts } from "../../network/api"
 import { personProps } from "../../services/service"
 import Spinner from "../Spinner/Spinner"
 import './people.css'
@@ -7,16 +8,16 @@ import PersonCard from "./PersonCard"
 console
 interface PeopleProps {
     media_id: string
-    getMediaCasts: (media_id: string) => string
+    media_type: string
 }
 
-const People = ({ media_id, getMediaCasts }: PeopleProps) => {
+const People = ({ media_id, media_type }: PeopleProps) => {
     console.log(getMediaCasts)
     const [casts, setCasts] = useState<personProps[]>()
     useEffect(() => {
 
         const fetchMediaCasts = async () => {
-            const res = await axios.get(getMediaCasts(media_id))
+            const res = await axios.get(getMediaCasts(media_id, media_type))
             setCasts(res?.data?.cast)
             console.log(res)
 

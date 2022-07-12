@@ -14,8 +14,6 @@
     display: flex;
     margin: 2rem 3rem;
     word-break:break-all;
-
-    /* flex-wrap: wrap; */
 }
 
 .movie-poster-image{
@@ -35,6 +33,10 @@
 .movie-title{
     font-weight: 800;
     color: #fff;
+}
+
+.movie-overview{
+    word-break: keep-all;
 }
 
 .movie-rating{

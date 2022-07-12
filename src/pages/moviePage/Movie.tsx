@@ -14,12 +14,23 @@ import People from '../../components/People/People';
 import Spinner from '../../components/Spinner/Spinner';
 import MoviesList from '../../components/MoviesList/MoviesList';
 import axios from 'axios';
+import { useFaveContext } from '../../context';
 const Movie = () => {
   const { id: movieID } = useParams()
   const { pathname } = useLocation()
   const [movie, setMovie] = useState<movieProps & TVProps>()
   const [similarMovies, setSimilarMovies] = useState<(movieProps & TVProps)[]>()
+  const { isUserLoggedIn, addOrRemoveFav, favMovies } = useFaveContext()
 
+  //handle click to add or remove from favorites
+  const handleClick = () => {
+    movieID && addOrRemoveFav(movieID)
+    // if (movieID && favMovies.includes(movieID)) {
+    //   setAddedToFav(false)
+    // } else if (movieID) {
+    //   setAddedToFav(true)
+    // }
+  }
   useEffect(() => {
 
     const fetchMovie = async () => {
@@ -64,10 +75,10 @@ const Movie = () => {
 
       <Palette src={movie?.poster_path ? `${fixCorsUrl + imgBaseURL + movie.poster_path}` : ''}>
         {({ data, loading, error }) => {
-          return <div style={{ width: '100%', display: 'flex', justifyContent: 'center', backgroundImage: `linear-gradient(to right, ${data.vibrant ? hexToRGB(data.vibrant, 1) : data.vibrant}, ${data.vibrant ? hexToRGB(data.vibrant, 0.85) : data.vibrant} )`, backgroundSize: 'cover' }} >
+          return <div style={{ width: '100%', display: 'flex', justifyContent: 'center', backgroundImage: `${loading || error ? 'linear-gradient(0deg, #252528 0%, #2f2b31 100%)' : `linear-gradient(to right, ${data.vibrant ? hexToRGB(data.vibrant, 1) : data.vibrant}, ${data.vibrant ? hexToRGB(data.vibrant, 0.85) : data.vibrant} )`}`, backgroundSize: 'cover' }} >
             <div className="movie-header-container"  >
               <div className="movie-poster-image">
-                <img src={movie?.poster_path ? `${imgBaseURL}${movie.poster_path}` : NoImg()} alt="movie image" width="300px" height="450px" style={{ borderRadius: '10px' }} />
+                <img src={movie?.poster_path ? `${imgBaseURL}${movie.poster_path}` : NoImg()} alt="movie image" width="300px" height="450px" style={{ borderRadius: '10px' }} loading="lazy" />
               </div>
               <div className="movie-details">
                 <div className="movie-title"> {movie?.title ? movie.title : movie?.name}</div>
@@ -76,15 +87,19 @@ const Movie = () => {
                     <div className="user-score">User Score</div>
                     <Rating rating={movie?.vote_average!} />
                   </div>
-                  <div className="fav-icon">
+                  <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                    <div>{movieID && favMovies.includes(movieID) ? "Added to favourites" : "Add to favourites"}</div>
 
-                    <svg id="glyphicons-basic" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-                      <path fill="#ffffff" id="heart" d="M27.78131,11.92578c0,4.82666-6.13562,8.68128-11.0376,14.0686a.99978.99978,0,0,1-1.48742,0c-4.902-5.38732-11.03748-9.24194-11.03748-14.0686,0-5.52954,7.53626-9.48682,11.57507-3.82544a.25855.25855,0,0,0,.42029.00562C20.47992,2.43628,27.78131,6.39453,27.78131,11.92578Z" />
-                    </svg>
+                    <div className="fav-icon">
+
+                      <svg id="glyphicons-basic" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" onClick={handleClick}>
+                        <path fill={movieID && favMovies.includes(movieID) ? "#ff0000" : "#ffffff"} id="heart" d="M27.78131,11.92578c0,4.82666-6.13562,8.68128-11.0376,14.0686a.99978.99978,0,0,1-1.48742,0c-4.902-5.38732-11.03748-9.24194-11.03748-14.0686,0-5.52954,7.53626-9.48682,11.57507-3.82544a.25855.25855,0,0,0,.42029.00562C20.47992,2.43628,27.78131,6.39453,27.78131,11.92578Z" />
+                      </svg>
+                    </div>
 
                   </div>
                 </div>
-                <div className="move-overview">
+                <div className="movie-overview">
                   {movie?.overview}
                 </div>
               </div>
@@ -100,7 +115,7 @@ const Movie = () => {
           <div className="movie-cast-title">Top Billed Casts</div>
           <div className="movie-casts-cards" >
 
-            {movieID && <People media_id={movieID} getMediaCasts={movie?.name ? getTVCasts : getMovieCasts} />}
+            {(movie && movieID) && <People media_id={movieID} media_type={movie?.name ? 'tv' : 'movie'} />}
             <div className="shadow"></div>
 
           </div>

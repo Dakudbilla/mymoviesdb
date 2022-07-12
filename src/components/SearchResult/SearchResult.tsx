@@ -20,13 +20,19 @@ const SearchResult = () => {
   const [numMoviesRes, setNumMovieRes] = useState<numRes>()
   const [isActive, setIsActive] = useState("movies_search")
   const [loopingMedia, setLoopingMedia] = useState<(movieProps & TVProps)[]>()
-  const [selectedPage, setSelectedPage] = useState(1)
+  const [selectedMoviePage, setSelectedMoviePage] = useState(1)
+  const [selectedTVPage, setSelectedTVPage] = useState(1)
 
 
   const handlePageClick = (selectedItem: {
     selected: number;
   }) => {
-    setSelectedPage(selectedItem.selected + 1)
+    if (isActive === 'movies_search') {
+      setSelectedMoviePage(selectedItem.selected + 1)
+    }
+    if (isActive === "tv_shows_search") {
+      setSelectedTVPage(selectedItem.selected + 1)
+    }
   }
   const handleClick = (event: React.MouseEvent<HTMLLIElement>) => {
     if (event.currentTarget.id !== isActive) {
@@ -47,14 +53,14 @@ const SearchResult = () => {
   }
   useEffect(() => {
     const fetchSearchMovies = async () => {
-      const res = await getSearchedMovies(searchParams.get('query') || '', selectedPage)
+      const res = await getSearchedMovies(searchParams.get('query') || '', selectedMoviePage)
       setMovies(res.data.results)
       setLoopingMedia(res.data.results)
       setNumMovieRes({ currentPage: res.data.page, total_pages: res.data.total_pages, total_results: res.data.total_results })
     }
 
     const fetchSearchTV = async () => {
-      const res = await getSearchedTV(searchParams.get('query') || '', selectedPage)
+      const res = await getSearchedTV(searchParams.get('query') || '', selectedTVPage)
       setTv(res.data.results)
 
       setNumTVRes({ currentPage: res.data.page, total_pages: res.data.total_pages, total_results: res.data.total_results })
@@ -65,7 +71,7 @@ const SearchResult = () => {
     fetchSearchMovies()
     fetchSearchTV()
 
-  }, [selectedPage])
+  }, [selectedMoviePage, selectedTVPage])
   return <div className="search-result">
     <div className="search-result-container">
       <div className="search-result-sidebar">
