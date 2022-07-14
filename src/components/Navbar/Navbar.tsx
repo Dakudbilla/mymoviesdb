@@ -3,7 +3,7 @@ import { useFaveContext } from "../../context";
 import "./navbar.css";
 
 const NavbBar = () => {
-  const { isUserLoggedIn, addOrRemoveFav, favMovies, signInWithGoogle } = useFaveContext()
+  const { isUserLoggedIn, signInWithGoogle, signOutGoogle } = useFaveContext()
 
   return (
     <section className="nav">
@@ -13,7 +13,7 @@ const NavbBar = () => {
         </div>
         <div className="nav-others">
           <ul>
-            {isUserLoggedIn && <li>Logout </li>}
+            {isUserLoggedIn && <li style={{ cursor: 'pointer' }} onClick={() => signOutGoogle()}>Logout </li>}
             {
               isUserLoggedIn ?
                 <li><Link to='/favorites'>My Favourites</Link> </li> :
