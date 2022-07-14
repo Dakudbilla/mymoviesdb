@@ -1,29 +1,40 @@
-import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
-import { createContext, ReactNode, useContext, useState } from "react";
-import { auth } from "../firebase";
-
+import { signInWithPopup, GoogleAuthProvider, signOut } from "firebase/auth";
+import { createContext, ReactNode, useContext, useEffect, useState } from "react";
+import { auth, db } from "../firebase";
+import { collection, addDoc } from "firebase/firestore";
 
 interface contextProps {
     isUserLoggedIn: boolean
     signedInUserfavoriteMovies: () => string[]
-    addOrRemoveFav: (movieId: string) => void
+    addOrRemoveFav: (currentMedia: favMediaProps) => void
     signInWithGoogle: () => void
-    favMovies: string[]
+    signOutGoogle: () => void
+    favMedia: favMediaProps[]
+
 }
 
+export interface favMediaProps {
+    mediaId: string
+    mediaType: string
+}
+
+
 const faveMoviecontext = createContext({} as contextProps)
+
 
 export const useFaveContext = () => {
     return useContext(faveMoviecontext)
 }
+
+
 export const FavMovieContextProvider = ({ children }: { children: ReactNode }) => {
-    const [favMovies, setFavMovies] = useState<string[]>([])
+    const [favMedia, setFavMedia] = useState<favMediaProps[]>([])
     const [isUserLoggedIn, setIsUserLoggedIn] = useState(false)
-    const addOrRemoveFav = (movieId: string) => {
-        if (favMovies.find((movie) => movie === movieId)) {
-            setFavMovies(favMovies.filter((movie) => movie !== movieId))
+    const addOrRemoveFav = (currentMedia: favMediaProps) => {
+        if (favMedia.find((media) => media.mediaId === currentMedia.mediaId)) {
+            setFavMedia(favMedia.filter((media) => media.mediaId !== currentMedia.mediaId))
         } else {
-            setFavMovies([...favMovies, movieId])
+            setFavMedia([...favMedia, currentMedia])
         }
     }
 
@@ -35,7 +46,6 @@ export const FavMovieContextProvider = ({ children }: { children: ReactNode }) =
     const signInWithGoogle = () => {
         const provider = new GoogleAuthProvider()
         signInWithPopup(auth, provider).then((res) => {
-            console.log(res)
             setIsUserLoggedIn(Boolean(res.user))
 
         }).catch((err) => {
@@ -43,8 +53,30 @@ export const FavMovieContextProvider = ({ children }: { children: ReactNode }) =
         })
     }
 
+    const signOutGoogle = () => {
+        signOut(auth).then(() => {
+            console.log("Sign out succesfully")
+            setIsUserLoggedIn(false)
+        }).catch((err) => {
+            console.log({ "SignOut Fail": err })
+
+        })
+    }
+
+    useEffect(() => {
+        const addToFirebase = async () => {
+            try {
+                const docRef = await addDoc(collection(db, "users"), favMedia);
+                console.log("Document written with ID: ", docRef.id);
+            } catch (e) {
+                console.error("Error adding document: ", e);
+            }
+        }
+    }, [favMedia]);
+
+
     return (
-        <faveMoviecontext.Provider value={{ signInWithGoogle, addOrRemoveFav, signedInUserfavoriteMovies, isUserLoggedIn, favMovies }}>
+        <faveMoviecontext.Provider value={{ signOutGoogle, signInWithGoogle, addOrRemoveFav, signedInUserfavoriteMovies, isUserLoggedIn, favMedia }}>
             {children}
         </faveMoviecontext.Provider>
     )
