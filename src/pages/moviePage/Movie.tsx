@@ -29,11 +29,7 @@ const Movie = () => {
       mediaType: movie?.name ? "tv" : "movie"
     }
     movieID && addOrRemoveFav(media)
-    // if (movieID && favMedia.includes(movieID)) {
-    //   setAddedToFav(false)
-    // } else if (movieID) {
-    //   setAddedToFav(true)
-    // }
+
   }
   useEffect(() => {
 
