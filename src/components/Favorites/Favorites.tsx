@@ -1,10 +1,21 @@
-import { Link } from "react-router-dom"
+import { useEffect } from "react"
+import { Link, useNavigate } from "react-router-dom"
 import { useFaveContext } from "../../context"
 import FavMediaCard from "./FavMovieCard"
 import './favorites.css'
 
 const Favourites = () => {
-    const { favMedia } = useFaveContext()
+    const { favMedia, isUserLoggedIn } = useFaveContext()
+    const navigate = useNavigate()
+    useEffect(() => {
+        console.log("I run")
+        if (!isUserLoggedIn) {
+            navigate('/')
+        }
+    }, [])
+
+
+
     return <div className="fav-container">
         <h1>
             Your Favourite TV Shows and Movies

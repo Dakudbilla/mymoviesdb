@@ -3,6 +3,7 @@ import { createContext, ReactNode, useContext, useEffect, useState } from "react
 import { auth, db } from "../firebase";
 import { collection, addDoc, deleteDoc, doc, query, where, setDoc, getDocs } from "firebase/firestore";
 
+
 interface contextProps {
     isUserLoggedIn: boolean
     addOrRemoveFav: (currentMedia: favMediaFirestoreProps) => void
@@ -15,13 +16,13 @@ interface contextProps {
 export interface favMediaProps {
     mediaId: string
     mediaType: string
-    id?: string
+    // id?: string
 }
 
 interface favMediaFirestoreProps {
     mediaId: string
     mediaType: string
-    id: string
+    id?: string
 }
 
 interface User {
@@ -72,6 +73,7 @@ export const FavMovieContextProvider = ({ children }: { children: ReactNode }) =
             console.log("Sign out succesfully")
             setIsUserLoggedIn(false)
             setLoggedInUser({} as User)
+            setFavMedia([])
         }).catch((err) => {
             console.log({ "SignOut Fail": err })
 
@@ -81,36 +83,56 @@ export const FavMovieContextProvider = ({ children }: { children: ReactNode }) =
     useEffect(() => {
         const addToFirebase = async (favTVorMovie: favMediaProps) => {
             try {
-                loggedInUser.email && await setDoc(doc(db, "favmedia", loggedInUser.email), { ...addedFavMedia, id: loggedInUser.email })
                 loggedInUser.email && setFavMedia([...favMedia, { ...addedFavMedia, id: loggedInUser.email }])
+                console.log("Onnnn")
+                loggedInUser.email && await addDoc(collection(db, "favmedia"), { ...addedFavMedia, id: loggedInUser.email })
                 setAddedFavMedia({} as favMediaFirestoreProps)
 
             } catch (e) {
+                setFavMedia(favMedia.filter((media) => media.mediaId !== favTVorMovie?.mediaId))
                 console.error("Error adding document: ", e);
             }
         }
 
         const removeFromFirebase = async (favTVorMovie: favMediaProps) => {
             try {
-                const removedMedia = favMedia.find((media) => media.mediaId === favTVorMovie.mediaId)
-                removedMedia && await deleteDoc(doc(db, "favmedia", removedMedia.mediaId));
+                const favRef = collection(db, "favmedia");
+                const q = query(favRef, where("mediaId", "==", favTVorMovie.mediaId));
+                const querySnapshot = await getDocs(q);
+                querySnapshot.forEach(async (qdoc) => {
+                    await deleteDoc(doc(db, "favmedia", qdoc.id));
+                })
                 setRemovedFavMedia({} as favMediaFirestoreProps)
-                setFavMedia(favMedia.filter((media) => media.mediaId !== removedMedia?.mediaId))
+                setFavMedia(favMedia.filter((media) => media.mediaId !== favTVorMovie?.mediaId))
                 console.log(favMedia)
             } catch (e) {
-                console.error("Error adding document: ", e);
+                setFavMedia([...favMedia, removedFavMedia])
+                console.error("Error removing document: ", e);
             }
         }
 
+
+
+        if (Object.keys(addedFavMedia).length) {
+            addToFirebase(addedFavMedia)
+        }
+        if (Object.keys(removedFavMedia).length) {
+            removeFromFirebase(removedFavMedia)
+        }
+
+
+    }, [removedFavMedia, addedFavMedia]);
+
+    useEffect(() => {
         const signedInUserfavoriteMovies = async () => {
             try {
                 const favRef = collection(db, "favmedia");
-                const q = query(favRef, where("email", "==", "tv"));
+                const q = query(favRef, where("email", "==", loggedInUser.email));
                 const querySnapshot = await getDocs(q);
                 let docs: favMediaFirestoreProps[] = []
 
                 querySnapshot.forEach((doc) => {
-                    loggedInUser.email && docs.push({ ...doc.data(), id: loggedInUser.email })
+                    loggedInUser.email && docs.push({ ...doc.data() as favMediaFirestoreProps })
                 })
 
                 setFavMedia([...favMedia, ...docs])
@@ -121,17 +143,9 @@ export const FavMovieContextProvider = ({ children }: { children: ReactNode }) =
             }
         }
 
-        if (Object.keys(addedFavMedia).length) {
-            addToFirebase(addedFavMedia)
-        }
-        if (Object.keys(removedFavMedia).length) {
-            removeFromFirebase(removedFavMedia)
-        }
+        isUserLoggedIn && signedInUserfavoriteMovies()
 
-        loggedInUser && signedInUserfavoriteMovies()
-
-    }, [removedFavMedia, addedFavMedia]);
-
+    }, [isUserLoggedIn])
 
     return (
         <faveMoviecontext.Provider value={{ signOutGoogle, signInWithGoogle, addOrRemoveFav, isUserLoggedIn, favMedia }}>
