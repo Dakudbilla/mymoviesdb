@@ -8,7 +8,6 @@ const Favourites = () => {
     const { favMedia, isUserLoggedIn } = useFaveContext()
     const navigate = useNavigate()
     useEffect(() => {
-        console.log("I run")
         if (!isUserLoggedIn) {
             navigate('/')
         }

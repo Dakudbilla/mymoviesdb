@@ -46,10 +46,8 @@ export const FavMovieContextProvider = ({ children }: { children: ReactNode }) =
     const [addedFavMedia, setAddedFavMedia] = useState<favMediaFirestoreProps>({} as favMediaFirestoreProps)
     const addOrRemoveFav = (currentMedia: favMediaFirestoreProps) => {
         if (favMedia.find((media) => media.mediaId === currentMedia.mediaId)) {
-            console.log(currentMedia)
             setRemovedFavMedia(currentMedia)
         } else {
-            console.log("add")
             setAddedFavMedia(currentMedia)
         }
     }
@@ -84,7 +82,6 @@ export const FavMovieContextProvider = ({ children }: { children: ReactNode }) =
         const addToFirebase = async (favTVorMovie: favMediaProps) => {
             try {
                 loggedInUser.email && setFavMedia([...favMedia, { ...addedFavMedia, id: loggedInUser.email }])
-                console.log("Onnnn")
                 loggedInUser.email && await addDoc(collection(db, "favmedia"), { ...addedFavMedia, id: loggedInUser.email })
                 setAddedFavMedia({} as favMediaFirestoreProps)
 
@@ -97,20 +94,18 @@ export const FavMovieContextProvider = ({ children }: { children: ReactNode }) =
         const removeFromFirebase = async (favTVorMovie: favMediaProps) => {
             try {
                 const favRef = collection(db, "favmedia");
-                const q = query(favRef, where("mediaId", "==", favTVorMovie.mediaId));
+                const q = query(favRef, where("mediaId", "==", favTVorMovie.mediaId), where("id", "==", loggedInUser.email));
                 const querySnapshot = await getDocs(q);
                 querySnapshot.forEach(async (qdoc) => {
                     await deleteDoc(doc(db, "favmedia", qdoc.id));
                 })
                 setRemovedFavMedia({} as favMediaFirestoreProps)
                 setFavMedia(favMedia.filter((media) => media.mediaId !== favTVorMovie?.mediaId))
-                console.log(favMedia)
             } catch (e) {
                 setFavMedia([...favMedia, removedFavMedia])
                 console.error("Error removing document: ", e);
             }
         }
-
 
 
         if (Object.keys(addedFavMedia).length) {
@@ -127,7 +122,7 @@ export const FavMovieContextProvider = ({ children }: { children: ReactNode }) =
         const signedInUserfavoriteMovies = async () => {
             try {
                 const favRef = collection(db, "favmedia");
-                const q = query(favRef, where("email", "==", loggedInUser.email));
+                const q = query(favRef, where("id", "==", loggedInUser.email));
                 const querySnapshot = await getDocs(q);
                 let docs: favMediaFirestoreProps[] = []
 
@@ -135,9 +130,15 @@ export const FavMovieContextProvider = ({ children }: { children: ReactNode }) =
                     loggedInUser.email && docs.push({ ...doc.data() as favMediaFirestoreProps })
                 })
 
-                setFavMedia([...favMedia, ...docs])
+                ///Remove duplicates from object
+                const favM = Array.from(new Set([...favMedia, ...docs].map(a => a.id)))
+                    .map(id => {
+                        return [...favMedia, ...docs].find(a => a.id === id)
+                    })
 
-
+                if (favM) {
+                    setFavMedia(favM)
+                }
             } catch (e) {
                 console.error("Error adding document: ", e);
             }

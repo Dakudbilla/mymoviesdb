@@ -12,15 +12,12 @@ interface PeopleProps {
 }
 
 const People = ({ media_id, media_type }: PeopleProps) => {
-    console.log(getMediaCasts)
     const [casts, setCasts] = useState<personProps[]>()
     useEffect(() => {
 
         const fetchMediaCasts = async () => {
             const res = await axios.get(getMediaCasts(media_id, media_type))
             setCasts(res?.data?.cast)
-            console.log(res)
-
         }
         fetchMediaCasts()
 
