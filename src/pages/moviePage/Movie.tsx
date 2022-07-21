@@ -1,12 +1,10 @@
-import Palette from 'react-palette'
-
 import "./movie.css";
 
 import Rating from "../../components/Rating/Rating";
 import { hexToRGB } from '../../utils/hextoRGB';
 import { useLocation, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { fixCorsUrl, getMovieCasts, getMovieDetails, getSimilarMovies, getSimilarTV, getTVCasts, getTVDetails, imgBaseURL } from '../../network/api';
+import { fixCorsUrl, getMovieDetails, getSimilarMovies, getSimilarTV, getTVCasts, getTVDetails, imgBaseURL } from '../../network/api';
 import { movieLang, movieProps, TVProps } from '../../services/service';
 
 import { formatCurrency, NoImg } from '../../utils/formatCurrency';
@@ -15,6 +13,7 @@ import Spinner from '../../components/Spinner/Spinner';
 import MoviesList from '../../components/MoviesList/MoviesList';
 import axios from 'axios';
 import { useFaveContext } from '../../context';
+import Palette from "react-palette";
 const Movie = () => {
   const { id: movieID } = useParams()
   const { pathname } = useLocation()
