@@ -10,6 +10,7 @@ interface contextProps {
     signInWithGoogle: () => void
     signOutGoogle: () => void
     favMedia: favMediaProps[]
+    loggedInUser: User
 
 }
 
@@ -60,6 +61,7 @@ export const FavMovieContextProvider = ({ children }: { children: ReactNode }) =
         signInWithPopup(auth, provider).then((res) => {
             setIsUserLoggedIn(Boolean(res.user))
             setLoggedInUser({ displayName: res.user.displayName, email: res.user.email })
+
 
         }).catch((err) => {
             console.log(err)
@@ -152,7 +154,7 @@ export const FavMovieContextProvider = ({ children }: { children: ReactNode }) =
     }, [isUserLoggedIn])
 
     return (
-        <faveMoviecontext.Provider value={{ signOutGoogle, signInWithGoogle, addOrRemoveFav, isUserLoggedIn, favMedia }}>
+        <faveMoviecontext.Provider value={{ signOutGoogle, signInWithGoogle, addOrRemoveFav, isUserLoggedIn, favMedia, loggedInUser }}>
             {children}
         </faveMoviecontext.Provider>
     )
