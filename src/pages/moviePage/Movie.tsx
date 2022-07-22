@@ -38,6 +38,7 @@ const Movie = () => {
           const res = await axios.get(getTVDetails(movieID))
           setMovie(res?.data)
 
+
         }
       } else if (pathname.includes('/movies')) {
 
@@ -142,13 +143,13 @@ const Movie = () => {
         </div>
 
         <div className="movie-budget">
-          <div className="movie-budget-title">Available Budget</div>
-          <div className="movie-budget-content"> {movie?.budget ? Number(formatCurrency(movie?.budget)) > 0 ? formatCurrency(movie?.budget) : "Not Available" : "Not Available"}</div>
+          <div className="movie-budget-title">Available Budget </div>
+          <div className="movie-budget-content"> {movie?.budget ? Number(movie?.budget) > 0 ? formatCurrency(movie?.budget) : "Not Available" : "Not Available"}</div>
         </div>
 
         <div className="movie-revenue">
           <div className="movie-revenue-title">Revenue</div>
-          <div className="movie-revenue-content">{movie?.revenue ? Number(formatCurrency(movie?.revenue)) > 0 ? formatCurrency(movie?.revenue) : "Not Available" : "Not Available"}</div>
+          <div className="movie-revenue-content">{movie?.revenue ? Number(movie?.revenue) > 0 ? formatCurrency(movie?.revenue) : "Not Available" : "Not Available"}</div>
         </div>
 
       </div>
