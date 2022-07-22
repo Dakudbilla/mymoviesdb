@@ -13,7 +13,7 @@ import Spinner from '../../components/Spinner/Spinner';
 import MoviesList from '../../components/MoviesList/MoviesList';
 import axios from 'axios';
 import { useFaveContext } from '../../context';
-import Palette from "react-palette";
+import Palette, { PaletteState } from "react-palette";
 const Movie = () => {
   const { id: movieID } = useParams()
   const { pathname } = useLocation()
@@ -73,7 +73,7 @@ const Movie = () => {
     <div className="movie-page-header" style={{ backgroundImage: `${movie?.backdrop_path ? `url(https://image.tmdb.org/t/p/w1000_and_h450_multi_faces/${movie?.backdrop_path})` : 'linear-gradient(0deg, #252528 0%, #2f2b31 100%)'}` }} >
 
       <Palette src={movie?.poster_path ? `${fixCorsUrl + imgBaseURL + movie.poster_path}` : ''}>
-        {({ data, loading, error }) => {
+        {({ data, loading, error }: PaletteState) => {
           return <div style={{ width: '100%', display: 'flex', justifyContent: 'center', backgroundImage: `${loading || error ? 'linear-gradient(0deg, #252528 0%, #2f2b31 100%)' : `linear-gradient(to right, ${data.vibrant ? hexToRGB(data.vibrant, 1) : data.vibrant}, ${data.vibrant ? hexToRGB(data.vibrant, 0.85) : data.vibrant} )`}`, backgroundSize: 'cover' }} >
             <div className="movie-header-container"  >
               <div className="movie-poster-image">
