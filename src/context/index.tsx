@@ -131,14 +131,17 @@ export const FavMovieContextProvider = ({ children }: { children: ReactNode }) =
                 })
 
                 ///Remove duplicates from object
-                const favM = Array.from(new Set([...favMedia, ...docs].map(a => a.id)))
-                    .map(id => {
-                        return [...favMedia, ...docs].find(a => a.id === id)
-                    })
+                const favMediaIdSet = Array.from(new Set([...favMedia, ...docs].map(a => a.mediaId)))
+                let uniqueFavMedia = [] as favMediaFirestoreProps[]
+                for (let i = 0; i < favMediaIdSet.length; i++) {
+                    const favdata = [...favMedia, ...docs].find(a => a.mediaId === favMediaIdSet[i])
+                    if (favdata !== undefined) {
+                        uniqueFavMedia = [...uniqueFavMedia, favdata]
+                    }
 
-                if (favM) {
-                    setFavMedia(favM)
                 }
+
+                setFavMedia(uniqueFavMedia)
             } catch (e) {
                 console.error("Error adding document: ", e);
             }
