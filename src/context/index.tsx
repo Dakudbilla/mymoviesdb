@@ -2,6 +2,7 @@ import { signInWithPopup, GoogleAuthProvider, signOut } from "firebase/auth";
 import { createContext, ReactNode, useContext, useEffect, useState } from "react";
 import { auth, db } from "../firebase";
 import { collection, addDoc, deleteDoc, doc, query, where, setDoc, getDocs } from "firebase/firestore";
+import useLocalStorage from "../hooks/useLocalStorage";
 
 
 interface contextProps {
@@ -41,8 +42,8 @@ export const useFaveContext = () => {
 
 export const FavMovieContextProvider = ({ children }: { children: ReactNode }) => {
     const [favMedia, setFavMedia] = useState<favMediaFirestoreProps[]>([])
-    const [isUserLoggedIn, setIsUserLoggedIn] = useState(false)
-    const [loggedInUser, setLoggedInUser] = useState<User>({} as User)
+    const [isUserLoggedIn, setIsUserLoggedIn] = useLocalStorage<boolean>("isUserLoggedIn", false)
+    const [loggedInUser, setLoggedInUser] = useLocalStorage<User>("loggedInUser", {} as User)
     const [removedFavMedia, setRemovedFavMedia] = useState<favMediaFirestoreProps>({} as favMediaFirestoreProps)
     const [addedFavMedia, setAddedFavMedia] = useState<favMediaFirestoreProps>({} as favMediaFirestoreProps)
     const addOrRemoveFav = (currentMedia: favMediaFirestoreProps) => {
