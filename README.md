@@ -1,3 +1,5 @@
+<img  src="home.png"/>
+
 # React TypeScript Movies App
 
 This a beautiful movie app that allows users to :
