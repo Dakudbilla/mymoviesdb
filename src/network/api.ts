@@ -29,4 +29,4 @@ export const getSearchedMovies = async(query:string,pageNum:number)=> await axio
 
 export const getSearchedTV = async(query:string,pageNum:number)=> await axios.get( `https://api.themoviedb.org/3/search/tv?query=${query}&page=${pageNum}&api_key=da061aea68de1ab70547833e12285d32&language=en-US&include_adult=false`)
 
-export const fixCorsUrl=` https://stormy-temple-40347.herokuapp.com/`
+export const fixCorsUrl=`https://stormy-temple-40347.herokuapp.com/`
