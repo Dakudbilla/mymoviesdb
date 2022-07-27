@@ -97,7 +97,7 @@ const SearchResult = () => {
                 <div className="search-result-main" key={movie.id}>
                   <div className="search-result-card">
                     <div className="search-res-img">
-                      <Link to={movie.title ? `/movies/${movie.id}` : `/tv/${movie.id}`}> <img src={movie.poster_path ? `${imgBaseURL}${movie.poster_path}` : NoImg} alt="mediatype image" width="150px" height="100%" /></Link>
+                      <Link to={movie.title ? `/movies/${movie.id}` : `/tv/${movie.id}`}> <img src={movie.poster_path ? `${imgBaseURL}${movie.poster_path}` : NoImg} alt="mediatype image" style={{ maxWidth: '150px', maxHeight: '100%' }} /></Link>
 
                     </div>
                     <div className="search-res-body">

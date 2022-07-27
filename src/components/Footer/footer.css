@@ -3,7 +3,7 @@
     height: 10rem;
     background-color: rgb(3, 37, 65);
     display: grid;
-    grid-template-columns: repeat(3,1fr);
+    grid-template-columns: repeat(2,1fr);
     place-items: center;
     color: #fff;
     font-weight: 800;
@@ -12,3 +12,8 @@
 
 }
 
+@media screen and (min-width:750px) {
+    .footer-container{
+        grid-template-columns: repeat(3,1fr);
+    }
+}

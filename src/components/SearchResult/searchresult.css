@@ -61,7 +61,7 @@
 
 .search-result-card{
     display: flex;
-    gap: 1.5rem;
+    gap: 1rem;
     height: 200px;
 
 }
@@ -73,7 +73,6 @@
 }
 
 .search-body-overview{
-    margin-top: 1rem;
     padding: 0 0.5rem;
     overflow: hidden;
 }
@@ -121,3 +120,20 @@
 /* .page-link{
     padding: 1rem;
   } */
+
+@media screen and (max-width:840px) {
+    .search-result-container{
+        grid-template-columns: 1fr;
+        width:95%;
+    }
+
+    .search-result-main{
+        display: flex;
+        flex-direction: column;
+    }
+
+    .search-body-overview{
+        height: 73%;
+    }
+    
+}

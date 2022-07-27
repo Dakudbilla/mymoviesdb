@@ -18,7 +18,7 @@ const Search = () => {
   return <>
     <div className="search-container">
       <form className="search-form" onSubmit={handleSubmit} >
-        <input type="text" name="search" value={searchText} onChange={(event) => setSearchText(event.currentTarget.value)} className="search-input" placeholder="Search for movies" />
+        <input type="text" name="search" value={searchText} onChange={(event) => setSearchText(event.currentTarget.value)} className="search-input" placeholder="Search by title" />
         <button type="submit" className="search-button" >Search</button>
       </form>
     </div>

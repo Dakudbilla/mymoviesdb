@@ -7,6 +7,16 @@
     margin-bottom: -3rem;
 }
 
+@media screen and (max-width:750px) {
+    .header-wrapper-wrapper{
+        width: 100%;
+    }
+
+    .search-container{
+        width: 100%;
+        margin: auto 0;
+    }
+}
 
  .search-input{
     width: 100%;
@@ -27,8 +37,8 @@
         display: inline;
         background: linear-gradient(to right, rgba(30,213,169, 1) 0%, rgba(1,180,228, 1) 100%); 
         position: absolute;
-        height: auto;
-        width: 10rem;
+        max-height: auto;
+        max-width: 10rem;
         border-radius: 30px;
         line-height:2rem;
         border: none;

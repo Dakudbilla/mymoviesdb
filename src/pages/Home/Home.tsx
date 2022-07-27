@@ -93,7 +93,7 @@ const Home = () => {
 
                     <div className="popular-container">
                         <div className="popular-header">
-                            <div className="popular-title">Top Rated </div>
+                            <div className="popular-title">TopRated </div>
                             <ul>
                                 {
                                     ["TV", "Movies"].map((item, index) => <li key={index + item} id={`${index + item + "topRated"}`} className={isActive.isActiveTopRated === `${index + item + "topRated"}` ? "active-media" : ''} onClick={handleSelect} >{item}</li>)

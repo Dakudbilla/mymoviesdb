@@ -8,13 +8,19 @@
   }
   
   .popular{
-    width: 80%;
+    width: 95%;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     margin-top: 1rem;
   
+  }
+
+  @media screen and (min-with:750px) {
+    .popular{
+      width: 80%;
+    }
   }
   
   .popular-title{
